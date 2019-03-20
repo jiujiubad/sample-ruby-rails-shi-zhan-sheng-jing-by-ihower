@@ -1,0 +1,18 @@
+<% if @event.errors.any? %>
+  <h2>6666</h2>
+  <h2><%= pluralize(@event.errors.count, "error") %> prohibited this person from being saved:</h2>
+  <ul>
+    <% @event.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= f.label :name, "Name" %>
+<%= f.text_field :name %>
+
+<%= f.label :description, "Description" %>
+<%= f.text_area :description %>
+
+<%= f.label :name, "Remark" %>
+<%= f.text_field :remark %>
