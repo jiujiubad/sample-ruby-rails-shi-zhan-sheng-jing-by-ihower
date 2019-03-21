@@ -15,10 +15,11 @@
 #
 # Uncomment the following lines to make the configuration take effect.
 
-PreCommit:
-  RuboCop:
-    enabled: true
-    on_warn: fail # Treat all warnings as failures
+#PreCommit:
+#  RuboCop:
+#    enabled: true
+#    problem_on_unmodified_line: ignore
+#    on_warn: fail # Treat all warnings as failures
 #
 #  TrailingWhitespace:
 #    enabled: true
