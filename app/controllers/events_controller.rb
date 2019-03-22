@@ -2,7 +2,13 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   def index
-    @events = Event.page(params[:page]).per(5)
+    if params[:keyword]
+      @events = Event.where( [ "name like ?", "%#{params[:keyword]}%"])
+    else
+      @events = Event.all
+    end
+    sort_by = (params[:order]=='name')?'name':'created_at'
+    @events = @events.order(sort_by).page(params[:page]).per(5)
     respond_to do |format|
       format.html {@events}
       format.xml {render xml: @events.to_xml}
@@ -51,10 +57,46 @@ class EventsController < ApplicationController
     redirect_to events_path
   end
 
+  def lastest
+    @events = Event.order("id DESC").limit(3)
+  end
+
+  def bulk_delete
+    Event.destroy_all
+    redirect_to events_url
+  end
+
+  def bulk_update
+    ids = Array(params[:ids])
+    events = ids.map{ |i| Event.find_by_id(i) }.compact
+    if params[:commit] == "Publish"
+      events.each{ |e| e.update( :status => "published" ) }
+    elsif params[:commit] == "Delete"
+      events.each{ |e| e.destroy }
+    end
+    redirect_to events_url
+  end
+
+  def dashboard
+    @event = Event.find(params[:id])
+  end
+
+  def join
+    @event = Event.find(params[:id])
+    @event.update_attributes(remark: 'Joined')
+    redirect_to events_url
+  end
+
+  def withdraw
+    @event = Event.find(params[:id])
+    @event.update_attributes(remark: 'withdraw')
+    redirect_to events_url
+  end
+
   private
 
   def event_params
-    params.require(:event).permit(:name, :description, :remark)
+    params.require(:event).permit(:name, :description, :remark, :category_id, :keyword, location_attributes: [:id, :name, :_destroy], group_ids: [])
   end
 
   def set_event

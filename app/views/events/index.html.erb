@@ -1,16 +1,36 @@
-<ul>
-  <% @events.each do |event| %>
-    <li>
-      <%= link_to event.name, event_path(event) %>
-      <%= link_to "(XML)", event_path(event, format: :xml) %>
-      <%= link_to "(JSON)", event_path(event, format: :json) %>
-      <%= link_to 'Edit', edit_event_path(event) %>
-      <%= button_to 'Delete', event_path(event), method: :delete, data: {confirm: "Sure to Delete?"} %>
-    </li>
-  <% end %>
-</ul>
+<%= form_tag events_path, :method => :get do %>
+  <%= text_field_tag "keyword" %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<%= form_with url: bulk_update_events_path do %>
+  <ul>
+    <% @events.each do |event| %>
+      <li>
+        <%= check_box_tag "ids[]", event.id, false %>
+        <%= link_to event.name, event_path(event) %>
+        <%= event.status %>
+        <%= link_to "(XML)", event_path(event, format: :xml) %>
+        <%= link_to "(JSON)", event_path(event, format: :json) %>
+        <%= link_to 'Edit', edit_event_path(event) %>
+        <%= link_to 'attendees', event_attendees_path(event) %>
+        <%= link_to 'location', event_location_path(event) %>
+        <%= link_to 'Delete', event_path(event), method: :delete, data: {confirm: "Sure to Delete?"} %>
+        <%= link_to 'Dashboard', dashboard_event_path(event) %>
+        <%= link_to 'Join', join_event_path(event), method: :post %>
+        <%= link_to 'Withdraw', withdraw_event_path(event), method: :post %>
+        <%= event.remark %>
+      </li>
+    <% end %>
+  </ul>
+  <%= submit_tag "Delete" %>
+  <%= submit_tag "Publish" %>
+  <%= link_to 'Sort by name', events_path(order: 'name') %>
+  <%= link_to 'Sort by Default', events_path %>
+<% end %>
 
 <%= link_to 'New Event', new_event_path %>
 <%= link_to 'Atom feed', events_path(format: :atom) %>
-
+<%= link_to 'Lastest', lastest_events_path(@event) %>
+<%= button_to 'Delete All', bulk_delete_events_path, method: :post %>
 <%= paginate @events %>
