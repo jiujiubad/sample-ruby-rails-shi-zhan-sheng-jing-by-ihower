@@ -2,6 +2,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   def index
+    @event = Event.new
     if params[:keyword]
       @events = Event.where( [ "name like ?", "%#{params[:keyword]}%"])
     else

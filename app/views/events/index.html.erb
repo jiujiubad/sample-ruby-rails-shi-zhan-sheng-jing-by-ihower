@@ -1,4 +1,21 @@
+<h1>Event List</h1>
+<%#= 要在 index 方法里定义 @event。常报错 param is missing or the value is empty: event %>
+<%= form_with model: @event, local: true do |f| %>
+  <%= render partial: 'form', locals: {f:f} %>
+<% end %>
+
+<hr/>
+
+<%#= form_with 搜索框（新写法）：常报错 param is missing or the value is empty: event %>
+<%= form_with method: :get, url: events_path, local: true do %>
+  <%= "form_with" %>
+  <%= text_field_tag "keyword" %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<%#= form_tag 搜索框（旧写法） %>
 <%= form_tag events_path, :method => :get do %>
+  <%= "form_tag" %>
   <%= text_field_tag "keyword" %>
   <%= submit_tag "Search" %>
 <% end %>

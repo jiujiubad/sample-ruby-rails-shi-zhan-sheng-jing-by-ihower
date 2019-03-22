@@ -1,1 +1,3 @@
-<%= render 'form' %>
+<%= form_with model: setup_event(@event), local: true do |f| %>
+  <%= render partial: 'form', locals: {f:f} %>
+<% end %>

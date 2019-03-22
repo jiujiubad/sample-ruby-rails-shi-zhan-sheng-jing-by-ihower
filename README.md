@@ -28,4 +28,16 @@ accepts_nested_attributes_for：<https://ruby-china.github.io/rails-guides/v4.1/
   <%= hidden_field_tag 'event[group_ids][]','' %>
 ```
 
+## form_with
 在 Rails 5.1 之前，处理 HTML 表单有两个接口：针对模型实例的 form_for 和针对自定义 URL 的 form_tag。<https://ruby-china.github.io/rails-guides/5_1_release_notes.html>
+
+默认 post 改为 get：
+```
+<%= form_with method: :get, url: users_path, local: true do |form| %><% end %>
+```
+
+《rails guides》：<https://ruby-china.github.io/rails-guides/5_1_release_notes.html>
+
+安道1：<https://rails.guide/book/getting_started.html>
+
+安道2：<https://rails.guide/book/working_with_javascript_in_rails.html>
